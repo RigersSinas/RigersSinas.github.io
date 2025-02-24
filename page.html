@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Shear Sort Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            background-color: #fff;
+            margin: 20px auto;
+            display: block;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        #controls button, #controls select {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        #description {
+            margin-top: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #phaseInfo {
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #e0f0f0;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Shear Sort Visualization</h1>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div id="phaseInfo"></div>
+    <div id="controls">
+        <select id="gridSize" onchange="reset()">
+            <option value="2">2x2</option>
+            <option value="4">4x4</option>
+            <option value="8" selected>8x8</option>
+            <option value="16">16x16</option>
+            <option value="32">32x32</option>
+        </select>
+        <button onclick="nextStep()">Next Step</button>
+        <button onclick="reset()">Reset</button>
+    </div>
+    <div id="description">
+        <p>
+            Shear Sort is a parallel algorithm for sorting a 2D array of elements. 
+            The array is divided into rows and columns, where rows are sorted in the same direction, 
+            and columns are sorted upward. The process repeats until the entire array is sorted 
+            with white cells on top and black cells on bottom.
+        </p>
+    </div>
+    <script src="shearsort.js"></script>
+</body>
+</html>
