@@ -9,58 +9,250 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
+        
+        header {
+            background-color: #444;
+            color: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .logo img {
+            height: 60px;
+            margin-right: 20px;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            margin: 0;
+            color: #ccc;
+        }
+        
+        .language-switcher {
+            margin-right: 20px;
+        }
+        
+        .language-switcher a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        
+        .language-switcher a.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .left-section {
+            flex: 1;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .right-section {
+            flex: 1;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .info-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .info-box h2 {
+            margin-top: 0;
+        }
+        
+        .dark-box {
+            background-color: #444;
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: right;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
         canvas {
             background-color: #fff;
-            margin: 20px auto;
+            margin: 0 auto 20px;
             display: block;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
         }
-        #controls {
-            margin-top: 20px;
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        #controls button, #controls select {
-            padding: 10px 20px;
-            margin: 5px;
+        
+        select, button {
+            padding: 10px 15px;
             font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
         }
-        #description {
-            margin-top: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        
+        button:hover {
+            background-color: #f0f0f0;
         }
+        
+        button.action-btn {
+            background-color: #e00;
+            color: white;
+            border: none;
+        }
+        
+        button.action-btn:hover {
+            background-color: #c00;
+        }
+        
+        button.step-btn {
+            background-color: #666;
+            color: white;
+            border: none;
+        }
+        
+        button.step-btn:hover {
+            background-color: #555;
+        }
+        
         #phaseInfo {
             margin: 20px auto;
             padding: 10px;
             background-color: #e0f0f0;
             border-radius: 5px;
             max-width: 400px;
+            text-align: center;
+        }
+        
+        .stats-bar {
+            background-color: #9c27b0;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        footer {
+            background-color: #444;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+        
+        footer img {
+            height: 80px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Interactive Shear Sort Visualization</h1>
-    <canvas id="canvas" width="400" height="400"></canvas>
-    <div id="phaseInfo"></div>
-    <div id="controls">
-        <select id="gridSize" onchange="reset()">
-            <option value="2">2x2</option>
-            <option value="4">4x4</option>
-            <option value="8" selected>8x8</option>
-            <option value="16">16x16</option>
-            <option value="32">32x32</option>
-        </select>
-        <button onclick="nextStep()">Next Step</button>
-        <button onclick="reset()">Reset</button>
-    </div>
-    <div id="description">
-        <p>
-            Shear Sort is a parallel algorithm for sorting a 2D array of elements. 
-            The array is divided into rows and columns, where rows are sorted in the same direction, 
-            and columns are sorted upward. The process repeats until the entire array is sorted 
-            with white cells on top and black cells on bottom.
-        </p>
-    </div>
+    <header>
+        <div class="logo">
+            <img src="https://place-hold.it/60x60/444/fff&text=S" alt="Shearsort Logo">
+            <h1 id="title">Shearsort</h1>
+        </div>
+        <div class="language-switcher">
+            <a href="#" id="el">EL</a> | 
+            <a href="#" id="en" class="active">EN</a>
+        </div>
+    </header>
+    
+    <main>
+        <div class="left-section">
+            <div class="info-box">
+                <h2 id="about-title">About the app</h2>
+                <p id="about-text">This game-like interactive web app is intended to serve as assistive material for learning/training purposes regarding the study and analysis of the Shearsort parallel sorting algorithm for 2D meshes.</p>
+            </div>
+            
+            <div class="dark-box">
+                <h2 id="how-to-use-title">How to use</h2>
+                <p id="how-to-use-text">First define and visualize the mesh: select its dimension by the dropdown menu, and either let the app fill it for you automatically with random black and white cells or fill in your own pattern. By clicking Sort, you see the algorithm running. By clicking StS, you can run the algorithm in a step-by-step fashion using the Next - Previous buttons.</p>
+            </div>
+            
+            <div class="info-box">
+                <h2 id="how-it-works-title">How it works</h2>
+                <p id="how-it-works-text">The algorithm alternately sorts rows and columns of the mesh. All of the rows are sorted in phases 1, 3, . . . , log²N + 1. All of the columns are sorted in phases 2, 4, . . . , log²N. The columns are sorted so that smaller numbers move upward. The odd rows (1, 3, . . . , [N-1]) are sorted so that smaller numbers move leftward, and the even rows (2, 4, . . . , [N]) are sorted in reverse order.</p>
+            </div>
+            
+            <div class="dark-box">
+                <h2 id="why-bw-title">Why B&W</h2>
+                <p id="why-bw-text">Shearsort correctly sorts every input sequence. However, all input sequences – no matter what their exact values are – can always be mapped to appropriately generated sequences of zeros and ones.</p>
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <canvas id="canvas" width="400" height="400"></canvas>
+            
+            <div id="phaseInfo">Random mesh</div>
+            
+            <div class="controls">
+                <select id="gridSize" onchange="window.shearsort.reset()">
+                    <option value="2">2x2</option>
+                    <option value="4">4x4</option>
+                    <option value="8" selected>8x8</option>
+                    <option value="16">16x16</option>
+                    <option value="32">32x32</option>
+                </select>
+                
+                <button id="resetBtn" onclick="window.shearsort.reset()">Reset</button>
+                
+                <button id="sortBtn" class="action-btn" onclick="window.shearsort.sortAll()">Sort</button>
+                
+                <button id="stepBtn" class="step-btn" onclick="window.shearsort.toggleStepMode()">StS</button>
+            </div>
+            
+            <div class="step-controls" style="display: none;">
+                <button id="prevBtn" class="step-btn" onclick="window.shearsort.prevStep()">Previous</button>
+                <button id="nextBtn" class="step-btn" onclick="window.shearsort.nextStep()">Next</button>
+            </div>
+            
+            <div class="stats-bar">
+                <span id="total-cells">Total cells: 64</span> | 
+                <span id="current-phase">Current phase: 0</span> | 
+                <span id="max-phases">Max phases: 8</span>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <img src="https://place-hold.it/80x80/444/fff&text=S" alt="Shearsort Logo">
+    </footer>
+    
     <script src="shearsort.js"></script>
 </body>
 </html>
