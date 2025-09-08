@@ -1,349 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Parallel Shear Sort Visualization</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        
-        header {
-            background-color: #444;
-            color: white;
-            padding:40px 0 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;        
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            margin-left: 20px;
-        }
-        
-        .logo img {
-            height: 60px;
-            margin-right: 20px;
-        }
-        
-        .logo h1 {
-            font-size: 32px;
-            margin: 0;
-            color: #ccc;
-        }
-        
-        .language-switcher {
-            position: absolute;
-            bottom: 5px;
-            right: 10px;
-            font-size: 20px;
-        }
-        
-        .language-switcher a {
-            color: white;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-        
-        .language-switcher a.active {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        
-        main {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;;
-            padding: 20px;
-            gap: 20px;
-        }
-        
-        .left-section {
-            flex: 1;
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-left: 100px;
-        }
-        
-        .right-section {
-            flex: 1;
-            max-width: 550px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding:0 45px;
-        }
-        
-        .info-box {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: left;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .info-box h2 {
-            margin-top: 0;
-        }
-        
-        .dark-box {
-            background-color: #444;
-            color: white;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: left;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        canvas {
-            background-color: #fff;
-            margin: 0 auto 20px;
-            display: block;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: pointer;
-            width: 500px;
-            height: 400px;
-        }
-        
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        select, button {
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: white;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background-color: #f0f0f0;
-        }
-        
-        button.action-btn {
-            background-color: #e00;
-            color: white;
-            border: none;
-        }
-        
-        button.action-btn:hover {
-            background-color: #c00;
-        }
-        
-        button.step-btn {
-            background-color: #666;
-            color: white;
-            border: none;
-        }
-        
-        button.step-btn:hover {
-            background-color: #555;
-        }
-        
-        #phaseInfo {
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #e0f0f0;
-            border-radius: 5px;
-            max-width: 400px;
-            text-align: center;
-        }
-        
-        .stats-bar {
-            background-color: #9c27b0;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: center;
-        }
-        
-        .performance-stats {
-            background-color: #2196F3;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: center;
-        }
-        
-        footer {
-            background-color: #444;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 20px;
-        }
-        
-        footer img {
-            height: 80px;
-            margin: 10px;
-        }
-        
-       .phase-navigation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px 0;
-    flex-wrap: nowrap;
-    max-width: 100%;        /* Μην ξεπερνάει το container */
-    padding: 0 10px;        /* Ασφάλεια δεξιά και αριστερά */
-    box-sizing: border-box;
-    gap: 10px;
-}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Parallel Shear Sort Visualization</title>
 
-.nav-btn {
-    flex: 0 0 40px;       /* Σταθερό πλάτος 40px */
-    height: 40px;
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #eee;
-    border: 1px solid #bbb;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#phase-buttons {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    flex-grow: 1;
-    gap: 6px;
-}
-
-.phase-btn {
-    flex-grow: 1;           /* Να μεγαλώνει ανάλογα */
-    flex-shrink: 1;         /* Να μικραίνει αν χρειαστεί */
-    flex-basis: 0;          /* Αρχικό πλάτος 0 για σωστή κατανομή */
-    min-width: 24px;        /* Ελάχιστο πλάτος κουμπιού */
-    max-width: 40px;        /* Μέγιστο πλάτος κουμπιού */
-    height: 40px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    text-align: center;
-    line-height: 40px;
-}
-
-        
-        .phase-btn:hover {
-            background-color: #f0f0f0;
-        }
-        
-        .phase-btn.active {
-            background-color: #35a;
-            color: white;
-            border: none;
-        }
-        
-      
-    </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="logo.png" alt="Parallel Shearsort Logo">
-            <h1 id="title">Shearsort Algorithm</h1>
-        </div>
-        <div class="language-switcher">
-            <a href="#" id="el">EL</a> | 
-            <a href="#" id="en" class="active">EN</a>
-        </div>
-    </header>
-    
-    <main>
-        <div class="left-section">
-            <div class="info-box">
-                <h2 id="about-title">About the app</h2>
-                <p id="about-text">This game-like interactive web app demonstrates the parallel implementation of the Shearsort algorithm for 2D meshes, utilizing web workers for true parallelism.</p>
-            </div>
-            
-            <div class="dark-box">
-                <h2 id="how-to-use-title">How to use</h2>
-                <p id="how-to-use-text">First define and visualize the mesh: select its dimension by the dropdown menu, and either let the app fill it for you automatically with random black and white cells or fill in your own pattern. By clicking Sort, you see the algorithm running in parallel. By clicking StS, you can run the algorithm in a step-by-step fashion using the Next - Previous buttons.</p>
-            </div>
-            
-            <div class="info-box">
-                <h2 id="how-it-works-title">How it works</h2>
-                <p id="how-it-works-text">The algorithm alternately sorts rows and columns of the mesh in parallel. All of the rows are sorted in phases 1, 3, . . . , log²N + 1. All of the columns are sorted in phases 2, 4, . . . , log²N. The columns are sorted so that smaller numbers move upward. The odd rows (1, 3, . . . , [N-1]) are sorted so that smaller numbers move leftward, and the even rows (2, 4, . . . , [N]) are sorted in reverse order.</p>
-            </div>
-            
-            <div class="dark-box">
-                <h2 id="why-bw-title">Why black and white boxes</h2>
-                <p id="why-bw-text">Shearsort correctly sorts every input sequence. However, all input sequences – no matter what their exact values are – can always be mapped to appropriately generated sequences of zeros and ones.</p>
-            </div>
-            
-            
-        </div>
-        
-        <div class="right-section">
-            <canvas id="canvas" width="400" height="400"></canvas>
-            
-            <div id="phaseInfo">Random mesh</div>
-            
-            <div class="controls">
-                <select id="gridSize" onchange="window.parallelShearsort.reset()">
-                    <option value="4">4x4</option>
-                    <option value="8" selected>8x8</option>
-                    <option value="16">16x16</option>
-                    <option value="32">32x32</option>
-                    <option value="64">64x64</option>
-                    <option value="128">128x128</option>
-                    <option value="256">256x256</option>
-                </select>
-                
-                <button id="resetBtn" onclick="window.parallelShearsort.reset()">Reset</button>
-                
-                <button id="sortBtn" class="action-btn" onclick="window.parallelShearsort.sortAll()">Sort</button>
-                
-                <button id="stepBtn" class="step-btn" onclick="window.parallelShearsort.toggleStepMode()">SbS</button>
-            </div>
-            
-            <div class="step-controls">
-                <button id="prevBtn" class="step-btn" onclick="window.parallelShearsort.prevStep()">Previous</button>
-                <button id="nextBtn" class="step-btn" onclick="window.parallelShearsort.nextStep()">Next</button>
-            </div>
-            
-            <div class="phase-navigation" style="display: none;">
-                <button class="nav-btn prev-all">&laquo;</button>
-                <div id="phase-buttons"></div>
-                <button class="nav-btn next-all">&raquo;</button>
-            </div>
-            
-            <div class="stats-bar">
-                <span id="total-cells">Total cells: 64</span> | 
-                <span id="current-phase">Current phase: 0</span> | 
-                <span id="max-phases">Final phase: 0</span>
-            </div>
-        </div>
-    </main>
-    
-    <footer>
-        <img src="logo.png" alt="Parallel Shearsort Logo">
-        <p>This is an optimized version of the Shearsort algorithm with true parallelism using Web Workers.</p>
-    </footer>
-    
-    <script src="shearsort.js"></script>
-    <script src="https://cdn.userway.org/widget.js" data-account="Y9U3I71SX5"></script>
+<header>
+  <div class="logo">
+    <img src="logo.png" alt="Parallel Shearsort Logo" />
+    <h1 id="title">Shearsort Algorithm</h1>
+  </div>
+  <div class="language-switcher">
+    <a href="#" id="el">EL</a> |
+    <a href="#" id="en" class="active">EN</a>
+  </div>
+</header>
+
+<main>
+  <div class="left-section">
+    <div class="info-box">
+      <h2 id="about-title">About the app</h2>
+      <p id="about-text">An interactive animated visualization of the Shearsort parallel sorting algorithm for 2D meshes, intented to support courses on parallel algorithms.</p>
+    </div>
+
+    <div class="dark-box">
+      <h2 id="how-to-use-title">How to use</h2>
+      <p id="how-to-use-text">Select your desired mesh-dimension. You can modify the generated mesh by clicking on its cells to alter their value from black to while and vice versa. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "SbS" to view the sorting procedure in a step-by-step fashion. "Reset" generates a new instance.</p>
+    </div>
+
+    <div class="info-box">
+      <h2 id="how-it-works-title">How it works</h2>
+      <p id="how-it-works-text">Shearsort sorts the mesh by alternately sorting rows and columns. Rows are sorted in odd phases (i.e., 1, 3, 5,...). Columns are sorted in even phases (i.e., 2, 4, 6,...). In columns smaller numbers move upward. In odd rows smaller numbers move leftward while in even rows smaller numbers move rightward. The numbers appear in a snakelike order fast enough i.e., after at most logN + 1 phases for a mesh of N numbers. The odd-even transposition sort parallel algorithm is used for sorting independent rows or columns. For details:
+        <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">
+          F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.
+        </a>
+      </p>
+    </div>
+
+    <div class="dark-box">
+      <h2 id="why-bw-title">Why black and white boxes</h2>
+      <p id="why-bw-text">Shearsort correctly sorts all input sequences, which - regardless of their particular values - can always be mapped to appropriately generated equivalent sequences of 0s and 1s visualized as black and white cells.</p>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <canvas id="canvas" width="600" height="400"></canvas>
+
+    <div id="phaseInfo">Random mesh</div>
+
+    <div class="controls">
+      <select id="gridSize" onchange="window.parallelShearsort.reset()">
+        <option value="4">4x4</option>
+        <option value="8" selected>8x8</option>
+        <option value="16">16x16</option>
+        <option value="32">32x32</option>
+        <option value="64">64x64</option>
+        <option value="128">128x128</option>
+        <option value="256">256x256</option>
+        <option value="512">512x512</option>
+      </select>
+
+      <button id="resetBtn" onclick="window.parallelShearsort.reset()">Reset</button>
+      <button id="sortBtn" class="action-btn" onclick="window.parallelShearsort.sortAll()">Sort</button>
+      <button id="stepBtn" class="step-btn" onclick="window.parallelShearsort.toggleStepMode()">SbS</button>
+    </div>
+
+    <div class="step-controls">
+      <button id="prevBtn" class="step-btn" onclick="window.parallelShearsort.prevStep()">Previous</button>
+      <button id="nextBtn" class="step-btn" onclick="window.parallelShearsort.nextStep()">Next</button>
+    </div>
+
+    <div class="phase-navigation" style="display: none;">
+      <div class="phase-navigation-row">
+        <!-- ΤΩΡΑ τα βελάκια υπάρχουν από την αρχή στο HTML για να δεθούν οι listeners του shearsort.js -->
+        <button class="nav-btn prev-all">&laquo;</button>
+        <div id="phase-buttons"></div>
+        <button class="nav-btn next-all">&raquo;</button>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <span id="total-cells">Total cells: 64</span> |
+      <span id="current-phase">Current phase: 0</span> |
+      <span id="max-phases">Final phase: 0</span>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <img src="logo.png" alt="Parallel Shearsort Logo" />
+  <p>This is an optimized version of the Shearsort algorithm with true parallelism using Web Workers.</p>
+</footer>
+
+<script src="shearsort.js"></script>
+<script src="https://cdn.userway.org/widget.js" data-account="Y9U3I71SX5"></script>
+<script src="phase-navigation.js" defer></script>
+</script>
 </body>
 </html>
+
