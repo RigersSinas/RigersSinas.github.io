@@ -6,7 +6,7 @@
     padding: 0;
   }
 
-  /* --- ΣΤΥΛ ΓΙΑ ΟΛΑ ΤΑ ACTION BUTTONS --- */
+ 
   button {
     border-radius: 8px;
     padding: 10px 18px;
@@ -15,22 +15,21 @@
     transition: background-color 0.2s, transform 0.1s;
   }
 
-  /* Reset κόκκινο */
+
   #resetBtn { background-color: #e53935; color: white; border: none; }
   #resetBtn:hover { background-color: #c62828; }
   #resetBtn:active { transform: scale(0.96); }
 
-  /* Sort πράσινο */
+  
   #sortBtn { background-color: #43a047; color: white; border: none; }
   #sortBtn:hover { background-color: #2e7d32; }
   #sortBtn:active { transform: scale(0.96); }
 
-  /* SbS γκρι */
+
   #stepBtn { background-color: #757575; color: white; border: none; }
   #stepBtn:hover { background-color: #616161; }
   #stepBtn:active { transform: scale(0.96); }
 
-  /* Previous / Next (SbS navigation) – ίδιο γκρι */
   #prevBtn, #nextBtn, .nav-btn {
     background-color: #757575; color: white; border: none;
   }
@@ -81,9 +80,7 @@
   footer { background-color: #444; color: white; text-align: center; padding: 20px 0; margin-top: 20px; }
   footer img { height: 80px; margin: 10px; }
 
-  /* =========================
-     Phase navigation (CENTER + SCALING)
-     ========================= */
+
   .phase-navigation {
     display: none; flex-direction: column; align-items: center; justify-content: center;
     margin: 5px 0; gap: 10px; width: 100%; box-sizing: border-box; overflow: hidden; padding: 6px 8px;
@@ -93,7 +90,6 @@
     gap: 6px;
   }
 
-  /* Το strip: ΟΛΑ μέσα (<< … κουμπιά … >>), μία σειρά, κάνει scale ενιαία */
   #phase-buttons {
     display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;
     gap: 6px; transform-origin: center;
@@ -112,12 +108,9 @@
   .phase-btn:hover { background-color: #f0f0f0; }
   .phase-btn.active { background-color: #35a; color: white; border: none; }
 
-  /* wrap για ΑΡΙΣΤΕΡΑ: << + πρώτη φάση */
   .nowrap-pair-left { display: inline-flex; align-items: center; gap: 6px; }
-  /* wrap για ΔΕΞΙΑ: τελευταία φάση + >> */
   .nowrap-pair { display: inline-flex; align-items: center; gap: 6px; }
 
-  /* Responsive */
   @media (max-width: 900px) {
     html, body { overflow-x: hidden; }
     .left-section { margin-left: 0; max-width: 100%; }
