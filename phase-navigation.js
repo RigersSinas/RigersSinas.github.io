@@ -33,7 +33,6 @@
       strip.insertBefore(leftWrap, strip.firstChild);
     }
 
-    // ---- Δεξί ζευγάρι: τελευταία φάση + >>
     let rightWrap = strip.querySelector('.nowrap-pair');
     if (!rightWrap) {
       rightWrap = document.createElement('span');
@@ -54,7 +53,6 @@
     placing = false;
   }
 
-  // Scale όλου του strip ώστε να χωράει
   function fitStrip() {
     strip.style.transform = 'scale(1)'; // reset για σωστή μέτρηση
     const container = row;              // η γραμμή container
