@@ -69,7 +69,6 @@
     strip.style.transform = `scale(${scale})`;
   }
 
-  // Παρακολούθηση αλλαγών στα κουμπιά φάσεων
   const obs = new MutationObserver(() => {
     setTimeout(() => {
       placeLeftAndRightArrows();
@@ -84,7 +83,6 @@
     fitStrip();
   }, 0);
 
-  // Αναπροσαρμογή στο resize
   window.addEventListener('resize', fitStrip);
 
   // Hooks βημάτων
@@ -92,9 +90,9 @@
   document.getElementById('nextBtn')?.addEventListener('click', () => setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0));
   document.getElementById('prevBtn')?.addEventListener('click', () => setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0));
 
-  // Προαιρετικό hook για shearsort.js
   window.positionShearsortArrows = function(){
     placeLeftAndRightArrows();
     fitStrip();
   };
 })();
+
