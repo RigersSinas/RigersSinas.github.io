@@ -30,12 +30,10 @@ window.parallelShearsort = (function () {
   const langEN = document.getElementById('en');
   const langEL = document.getElementById('el');
 
-  
   if (!canvas || !ctx) {
     console.error('[Shearsort] Missing <canvas id="canvas"> or 2D context.');
   }
 
-  
   let size = 16;          
   let grid = [];
   let previousGrid = [];
@@ -58,10 +56,8 @@ window.parallelShearsort = (function () {
 
   let finalPhaseAdded = false;
 
-  
   const uiPhase = (n) => n;
 
-  
   const translations = {
     en: {
       title: 'Shearsort Algorithm',
@@ -126,14 +122,12 @@ window.parallelShearsort = (function () {
     },
   };
 
-  
   function formatString(str, ...args) {
     return str.replace(/{(\d+)}/g, (m, n) =>
       typeof args[n] !== 'undefined' ? args[n] : m
     );
   }
 
-  
   function getCSSSize() {
     const computedH = parseFloat(getComputedStyle(canvas).height);
     if (!computedH || Number.isNaN(computedH)) {
@@ -145,7 +139,6 @@ window.parallelShearsort = (function () {
     return { cssW, cssH };
   }
 
-  // ---- DPR scaling ----
   function resizeCanvasToDPR() {
     if (!ctx) return;
     const dpr = window.devicePixelRatio || 1;
@@ -156,7 +149,6 @@ window.parallelShearsort = (function () {
     drawGrid();
   }
 
-  // ---- Workers ----
   function createSortWorkerBlob() {
     const workerCode = `
       self.onmessage = function(e) {
@@ -203,7 +195,6 @@ window.parallelShearsort = (function () {
     }
   }
 
-  // ---- Grid init/draw ----
   function initializeGrid() {
     const gridSizeEl = document.getElementById('gridSize');
     const gridSizeVal = gridSizeEl && gridSizeEl.value ? parseInt(gridSizeEl.value, 10) : 16;
@@ -261,7 +252,6 @@ window.parallelShearsort = (function () {
     }
   }
 
-  // ---------- INFO MESSAGE ----------
   function phaseInfoForViewedIndex(viewIdx) {
     if (viewIdx === 0) return translations[currentLanguage].randomMesh;
     if (isSorted && finalPhaseAdded && viewIdx === maxPhase) {
@@ -276,12 +266,10 @@ window.parallelShearsort = (function () {
     updatePhaseInfo(phaseInfoForViewedIndex(currentPhase));
   }
 
-  
   function updatePhaseInfo(message) {
     if (phaseInfo) phaseInfo.innerHTML = message;
   }
 
-  
   function updateStatsUI() {
     if (totalCellsEl) {
       totalCellsEl.textContent = formatString(
@@ -376,7 +364,6 @@ window.parallelShearsort = (function () {
     }
   }
 
-  // ---- Grid change tracking ----
   function saveGridState() { previousGrid = deepCopy(grid); }
   function gridHasChanged() {
     if (!previousGrid.length) return true;
@@ -388,7 +375,6 @@ window.parallelShearsort = (function () {
     return false;
   }
 
-  
   function addFinalPhaseOnce() {
     if (finalPhaseAdded) return;
     gridHistory.push(deepCopy(grid)); 
@@ -396,7 +382,6 @@ window.parallelShearsort = (function () {
     finalPhaseAdded = true;
   }
 
-  // ---- Parallel sorting (phases) ----
   async function sortRowsParallel() {
     const phaseStartTime = performance.now();
     const batchId = Date.now();
@@ -423,7 +408,7 @@ window.parallelShearsort = (function () {
           data: grid[i],
           isRow: true,
           rowOrColIndex: i,
-          isOdd: i % 2 === 0,
+          isOdd: i % 2 === 0, 
           batchId,
           workerId: worker.id,
         });
@@ -479,7 +464,6 @@ window.parallelShearsort = (function () {
     return phaseDuration;
   }
 
-  // ---- Single, unified performStep ----
   async function performStep(inBatchMode = false) {
     if (currentPhase < theoreticalMaxPhases) {
       saveGridState();
@@ -525,9 +509,10 @@ window.parallelShearsort = (function () {
         if (isStepMode && !inBatchMode) createPhaseButtons();
         updatePhaseInfo(translations[currentLanguage].meshSorted);
         updateStatsUI();
-        return false; // done
+        return false; 
       }
     } else {
+      
       sortEndTime = performance.now();
       const totalDuration = sortEndTime - sortStartTime;
       if (sortTimeEl) {
@@ -544,6 +529,7 @@ window.parallelShearsort = (function () {
     }
   }
 
+  
   async function runUntilPhase(targetPhase) {
     if (targetPhase <= currentPhase) return;
     setControlsEnabled(false);
@@ -584,10 +570,11 @@ window.parallelShearsort = (function () {
       updatePhaseInfo(translations[currentLanguage].meshSorted);
       if (isStepMode) createPhaseButtons();
 
+      
       currentPhase = maxPhase;
       grid = deepCopy(gridHistory[currentPhase]);
       drawGrid();
-     
+      
       updateStatsUI();
       showInfoForCurrentView();
       if (isStepMode) updateActivePhaseButton();
@@ -596,18 +583,19 @@ window.parallelShearsort = (function () {
     }
   }
 
-  // ---- Public actions ----
+  
   async function sortAll() {
     if (isStepMode) toggleStepMode(); 
 
     isEditMode = false;
     canvas.onclick = null;
 
+    
     if (isSorted && finalPhaseAdded) {
       currentPhase = maxPhase;
       grid = deepCopy(gridHistory[currentPhase]);
       drawGrid();
-      updateStatsUI(); 
+      updateStatsUI(); // <<< keep stats in sync
       showInfoForCurrentView();
       if (isStepMode) updateActivePhaseButton();
       return;
@@ -650,6 +638,7 @@ window.parallelShearsort = (function () {
       updateStatsUI();
       if (isStepMode) createPhaseButtons();
 
+      
       currentPhase = maxPhase;
       grid = deepCopy(gridHistory[currentPhase]);
       drawGrid();
@@ -729,6 +718,7 @@ window.parallelShearsort = (function () {
     }
   }
 
+
   function switchLanguage(lang) {
     if (currentLanguage === lang) return;
     currentLanguage = lang;
@@ -763,6 +753,7 @@ window.parallelShearsort = (function () {
     fitPhaseButtons();
   }
 
+
   function setupEventListeners() {
     if (langEN && langEL) {
       langEN.addEventListener('click', (e) => { e.preventDefault(); switchLanguage('en'); });
@@ -790,6 +781,7 @@ window.parallelShearsort = (function () {
     });
   }
 
+
   function reset() {
     isSorting = false;
     setControlsEnabled(true);
@@ -803,6 +795,7 @@ window.parallelShearsort = (function () {
     fitPhaseButtons();
   }
 
+  
   window.addEventListener('load', function () {
     initializeGrid();
     resizeCanvasToDPR();
@@ -811,6 +804,7 @@ window.parallelShearsort = (function () {
     fitPhaseButtons();
   });
 
+ 
   return {
     nextStep,
     prevStep,
