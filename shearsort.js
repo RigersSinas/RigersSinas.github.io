@@ -60,7 +60,7 @@ window.parallelShearsort = (function () {
 
   const translations = {
     en: {
-      title: 'Shearsort Algorithm',
+      title: 'Shearsort algorithm',
       aboutTitle: 'About the app',
       aboutText:
         'An interactive animated visualization of the Shearsort parallel sorting algorithm for 2D meshes, intended to support courses on parallel algorithms.',
@@ -813,3 +813,4 @@ window.parallelShearsort = (function () {
     toggleStepMode,
   };
 })();
+
