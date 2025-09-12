@@ -150,21 +150,45 @@ window.parallelShearsort = (function () {
   }
 
   function createSortWorkerBlob() {
-    const workerCode = `
-      self.onmessage = function(e) {
-        const { data, isRow, rowOrColIndex, isOdd, batchId, workerId } = e.data;
-        let sortedData = [...data];
-        if (isRow) {
-          if (isOdd) sortedData.sort((a,b)=>a-b);
-          else       sortedData.sort((a,b)=>b-a);
-        } else {
-          sortedData.sort((a,b)=>a-b);
+  const workerCode = `
+    function oddEvenTranspositionSort(arr, ascending = true) {
+      const a = arr.slice();
+      const n = a.length;
+      for (let pass = 0; pass < n; pass++) {
+        const start = (pass % 2 === 0) ? 0 : 1; // even pass: compare (0,1), (2,3)...
+        for (let i = start; i + 1 < n; i += 2) {
+          const left = a[i], right = a[i+1];
+          const outOfOrder = ascending ? (left > right) : (left < right);
+          if (outOfOrder) {
+            a[i] = right; a[i+1] = left;
+          }
         }
-        self.postMessage({ sortedData, rowOrColIndex, isRow, batchId, workerId });
-      };
-    `;
-    return new Blob([workerCode], { type: 'application/javascript' });
-  }
+      }
+      return a;
+    }
+
+    self.onmessage = function(e) {
+      const { data, isRow, rowOrColIndex, isOdd, batchId, workerId } = e.data;
+      let sortedData;
+      if (isRow) {
+        const ascending = !!isOdd;   // odd rows (1-based) => isOdd=true => ascending
+        sortedData = oddEvenTranspositionSort(data, ascending);
+      } else {
+        sortedData = oddEvenTranspositionSort(data, true); // στήλες πάντα ascending
+      }
+
+      self.postMessage({
+        sortedData,
+        rowOrColIndex,
+        isRow,
+        batchId,
+        workerId
+      });
+    };
+  `;
+  return new Blob([workerCode], { type: 'application/javascript' });
+}
+
 
   function initializeWorkers() {
     terminateAllWorkers();
@@ -595,7 +619,7 @@ window.parallelShearsort = (function () {
       currentPhase = maxPhase;
       grid = deepCopy(gridHistory[currentPhase]);
       drawGrid();
-      updateStatsUI(); // <<< keep stats in sync
+      updateStatsUI(); 
       showInfoForCurrentView();
       if (isStepMode) updateActivePhaseButton();
       return;
@@ -813,4 +837,3 @@ window.parallelShearsort = (function () {
     toggleStepMode,
   };
 })();
-
