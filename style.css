@@ -108,11 +108,34 @@
 
   /* Responsive */
   @media (max-width: 900px) {
-    html, body { overflow-x: hidden; }
-    .left-section { margin-left: 0; max-width: 100%; }
-    .right-section { min-width: 0; max-width: 100%; padding: 0; }
-    main { justify-content: center; padding: 10px; }
-    canvas { max-width: 100%; height: auto; }
-    .phase-navigation { width: 100%; }
+  html, body { overflow-x: hidden; }
+
+  main {
+    flex-direction: column;
+    align-items: center;    /
   }
+
+  .left-section {
+    order: 1;         
+    margin-left: 0; 
+    max-width: 100%;
+  }
+
+  .right-section {
+    order: 2;         
+    min-width: 0; 
+    max-width: 100%;
+    padding: 0;
+  }
+
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .phase-navigation {
+    width: 100%;
+  }
+}
+
 
