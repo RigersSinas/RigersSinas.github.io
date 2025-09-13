@@ -66,7 +66,7 @@ window.parallelShearsort = (function () {
         'An interactive animated visualization of the Shearsort parallel sorting algorithm for 2D meshes, intended to support courses on parallel algorithms.',
       howToUseTitle: 'How to use',
       howToUseText:
-        'Select your desired mesh size. You can modify the generated mesh by clicking cells to toggle between black and white. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "SbS" to step through the procedure. "Reset" generates a new instance.',
+        'Select your desired mesh size. You can modify the generated mesh by clicking cells to toggle between black and white. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "Phases" to step through the procedure. "Reset" generates a new instance.',
       howItWorksTitle: 'How it works',
       howItWorksText:
         'Shearsort alternates between sorting rows and columns. Rows are sorted in odd phases (i.e., 1, 3, 5, ...). Columns are sorted in even phases (i.e., 2, 4, 6, ...). In columns smaller numbers move upward. In odd rows smaller numbers move leftward while in even rows smaller numbers move rightward. The numbers appear in a snakelike order fast enough, i.e., after at most logN + 1 phases for a mesh of N numbers. The odd–even transposition sort parallel algorithm is used for sorting independent rows or columns. For details: <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.</a>',
@@ -96,7 +96,7 @@ window.parallelShearsort = (function () {
         'Μια διαδραστική animated απεικόνιση του παράλληλου αλγορίθμου ταξινόμησης Shearsort για δισδιάστατα πλέγματα, σχεδιασμένη για να υποστηρίζει μαθήματα πάνω σε παράλληλους αλγόριθμους.',
       howToUseTitle: 'Οδηγίες χρήσης',
       howToUseText:
-        'Επιλέξτε τη διάσταση του πλέγματος που επιθυμείτε. Μπορείτε να τροποποιήσετε το πλέγμα κάνοντας κλικ στα κελιά του ώστε να αλλάξετε την τιμή τους από μαύρο σε άσπρο και αντίστροφα. Επιλέξτε «Ταξινόμηση» για να δείτε το πλέγμα να ταξινομείται σταδιακά με τον αλγόριθμο Shearsort. Επιλέξτε «Βήμα-βήμα» για να παρακολουθήσετε τη διαδικασία ταξινόμησης σε διαδοχικά στάδια. Η επιλογή «Επαναφορά» δημιουργεί ένα νέο τυχαίο πλέγμα.',
+        'Επιλέξτε τη διάσταση του πλέγματος που επιθυμείτε. Μπορείτε να τροποποιήσετε το πλέγμα κάνοντας κλικ στα κελιά του ώστε να αλλάξετε την τιμή τους από μαύρο σε άσπρο και αντίστροφα. Επιλέξτε «Ταξινόμηση» για να δείτε το πλέγμα να ταξινομείται σταδιακά με τον αλγόριθμο Shearsort. Επιλέξτε «Φάσεις» για να παρακολουθήσετε τη διαδικασία ταξινόμησης σε διαδοχικά στάδια. Η επιλογή «Επαναφορά» δημιουργεί ένα νέο τυχαίο πλέγμα.',
       howItWorksTitle: 'Πώς λειτουργεί',
       howItWorksText:
         'Ο αλγόριθμος Shearsort ταξινομεί το πλέγμα εναλλάσσοντας την ταξινόμηση γραμμών και στηλών. Οι γραμμές ταξινομούνται στις περιττές φάσεις (δηλ. 1, 3, 5, …). Οι στήλες ταξινομούνται στις άρτιες φάσεις (δηλ. 2, 4, 6, …). Στις στήλες, οι μικρότερες τιμές κινούνται προς τα πάνω. Στις περιττές γραμμές, οι μικρότερες τιμές κινούνται προς τα αριστερά, ενώ στις άρτιες γραμμές προς τα δεξιά. Οι αριθμοί τελικά εμφανίζονται με μορφή «φιδιού». Για την ταξινόμηση των ανεξάρτητων γραμμών ή στηλών χρησιμοποιείται ο παράλληλος αλγόριθμος odd–even transposition sort. Για λεπτομέρειες: <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.</a>',
@@ -857,3 +857,4 @@ window.parallelShearsort = (function () {
     toggleStepMode,
   };
 })();
+
