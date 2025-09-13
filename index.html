@@ -27,7 +27,7 @@
 
     <div class="dark-box">
       <h2 id="how-to-use-title">How to use</h2>
-      <p id="how-to-use-text">Select your desired mesh-dimension. You can modify the generated mesh by clicking on its cells to alter their value from black to while and vice versa. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "Phases" to view the sorting procedure in a step-by-step fashion. "Reset" generates a new instance.</p>
+      <p id="how-to-use-text">Select your desired mesh-dimension. You can modify the generated mesh by clicking on its cells to alter their value from black to while and vice versa. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "" to view the sorting procedure in a step-by-step fashion. "Reset" generates a new instance.</p>
     </div>
 
     <div class="info-box">
@@ -74,11 +74,17 @@
 
     <div class="phase-navigation" style="display: none;">
       <div class="phase-navigation-row">
-        <!-- ΤΩΡΑ τα βελάκια υπάρχουν από την αρχή στο HTML για να δεθούν οι listeners του shearsort.js -->
         <button class="nav-btn prev-all">&laquo;</button>
         <div id="phase-buttons"></div>
         <button class="nav-btn next-all">&raquo;</button>
       </div>
+    </div>
+
+    <div class="stats-bar">
+      <span id="current-phase">Current phase: 0</span> |
+      <span id="total-phases">Total phases: 0</span> |
+      <span id="max-phases">Max phases: 0</span> 
+
     </div>
   </div>
 </main>
@@ -93,7 +99,5 @@
 </script>
 </body>
 </html>
-
-
 
 
