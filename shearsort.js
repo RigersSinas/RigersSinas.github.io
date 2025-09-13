@@ -75,7 +75,7 @@ window.parallelShearsort = (function () {
         'Shearsort correctly sorts every input sequence. However, all input sequences—regardless of their exact values—can be mapped to appropriately generated equivalent sequences of zeros and ones visualized as black and white cells.',
       resetBtn: 'Reset',
       sortBtn: 'Sort',
-      stepBtn: 'SbS',
+      stepBtn: 'Phases',
       prevBtn: 'Previous',
       nextBtn: 'Next',
       randomMesh: 'Random mesh',
@@ -105,7 +105,7 @@ window.parallelShearsort = (function () {
         'Ο Shearsort ταξινομεί σωστά κάθε ακολουθία εισόδου, η οποία—ανεξάρτητα από τις συγκεκριμένες τιμές της—μπορεί να αντιστοιχιστεί σε ισοδύναμη ακολουθία από 0 και 1, η οποία απεικονίζεται ως κελιά με μαύρο και άσπρο χρώμα.',
       resetBtn: 'Επαναφορά',
       sortBtn: 'Ταξινόμηση',
-      stepBtn: 'ΒπΒ',
+      stepBtn: 'Φάσεις',
       prevBtn: 'Προηγούμενο',
       nextBtn: 'Επόμενο',
       randomMesh: 'Τυχαίο πλέγμα',
@@ -140,14 +140,27 @@ window.parallelShearsort = (function () {
   }
 
   function resizeCanvasToDPR() {
-    if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    const { cssW, cssH } = getCSSSize();
-    canvas.width  = Math.max(1, Math.round(cssW * dpr));
-    canvas.height = Math.max(1, Math.round(cssH * dpr));
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawGrid();
-  }
+  if (!ctx) return;
+  const dpr = window.devicePixelRatio || 1;
+
+  const rect = canvas.getBoundingClientRect();
+  const cssW = Math.max(1, rect.width);
+  const cssH = Math.max(1, rect.height);
+
+  const pixelW = Math.max(1, Math.round(cssW * dpr));
+  const pixelH = Math.max(1, Math.round(cssH * dpr));
+
+  if (canvas.width !== pixelW)  canvas.width  = pixelW;
+  if (canvas.height !== pixelH) canvas.height = pixelH;
+
+  // ΖΩΓΡΑΦΙΖΟΥΜΕ σε device pixels: 1 μονάδα == 1 device pixel
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+
+  drawGrid();
+}
+
+
 
   function createSortWorkerBlob() {
   const workerCode = `
@@ -250,31 +263,38 @@ window.parallelShearsort = (function () {
   function deepCopy(x) { return JSON.parse(JSON.stringify(x)); }
 
   function drawGrid() {
-    if (!ctx || !size) return;
-    const { cssW, cssH } = getCSSSize();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!ctx || !size) return;
 
-    const cellWidth = cssW / size;
-    const cellHeight = cssH / size;
-    const showGridLines = size <= 32;
+  const pw = canvas.width;   
+  const ph = canvas.height;  
+  ctx.clearRect(0, 0, pw, ph);
 
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        ctx.fillStyle = grid[i][j] === 1 ? '#000' : '#fff';
-        ctx.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
-        if (showGridLines) {
-          ctx.strokeStyle = '#888';
-          ctx.strokeRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
-        }
+  // Integer snapping σε device pixels
+  const xEdges = new Array(size + 1);
+  const yEdges = new Array(size + 1);
+  for (let j = 0; j <= size; j++) xEdges[j] = Math.round((j * pw) / size);
+  for (let i = 0; i <= size; i++) yEdges[i] = Math.round((i * ph) / size);
+
+  const showGridLines = size <= 32;
+
+  for (let i = 0; i < size; i++) {
+    const y = yEdges[i];
+    const h = yEdges[i + 1] - y;
+    for (let j = 0; j < size; j++) {
+      const x = xEdges[j];
+      const w = xEdges[j + 1] - x;
+      ctx.fillStyle = grid[i][j] === 1 ? '#000' : '#fff';
+      ctx.fillRect(x, y, w, h);
+      if (showGridLines) {
+        ctx.strokeStyle = '#888';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
       }
     }
-
-    if (!showGridLines) {
-      ctx.strokeStyle = '#888';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(0, 0, cssW, cssH);
-    }
   }
+}
+
+
 
   function phaseInfoForViewedIndex(viewIdx) {
     if (viewIdx === 0) return translations[currentLanguage].randomMesh;
