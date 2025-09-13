@@ -66,7 +66,7 @@ window.parallelShearsort = (function () {
         'An interactive animated visualization of the Shearsort parallel sorting algorithm for 2D meshes, intended to support courses on parallel algorithms.',
       howToUseTitle: 'How to use',
       howToUseText:
-        'Select your desired mesh size. You can modify the generated mesh by clicking cells to toggle between black and white. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "Phases" to step through the procedure. "Reset" generates a new instance.',
+        'Select your desired mesh size. You can modify the generated mesh by clicking cells to toggle between black and white. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "" to step through the procedure. "Reset" generates a new instance.',
       howItWorksTitle: 'How it works',
       howItWorksText:
         'Shearsort alternates between sorting rows and columns. Rows are sorted in odd phases (i.e., 1, 3, 5, ...). Columns are sorted in even phases (i.e., 2, 4, 6, ...). In columns smaller numbers move upward. In odd rows smaller numbers move leftward while in even rows smaller numbers move rightward. The numbers appear in a snakelike order fast enough, i.e., after at most logN + 1 phases for a mesh of N numbers. The odd–even transposition sort parallel algorithm is used for sorting independent rows or columns. For details: <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.</a>',
@@ -314,26 +314,18 @@ window.parallelShearsort = (function () {
     if (phaseInfo) phaseInfo.innerHTML = message;
   }
 
-  function updateStatsUI() {
-    if (totalCellsEl) {
-      totalCellsEl.textContent = formatString(
-        translations[currentLanguage].totalCells,
-        size * size
-      );
-    }
-    if (currentPhaseEl) {
-      currentPhaseEl.textContent = formatString(
-        translations[currentLanguage].currentPhase,
-        uiPhase(currentPhase)
-      );
-    }
-    if (maxPhasesEl) {
-      maxPhasesEl.textContent = formatString(
-        translations[currentLanguage].maxPhases,
-        uiPhase(maxPhase)
-      );
-    }
+ function updateStatsUI() {
+  if (currentPhaseEl) {
+    currentPhaseEl.textContent = `Current phase: ${uiPhase(currentPhase)}`;
   }
+  const totalPhasesEl = document.getElementById('total-phases');
+  if (totalPhasesEl) {
+    totalPhasesEl.textContent = `Total phases: ${uiPhase(maxPhase)}`;
+  }
+  if (maxPhasesEl) {
+    maxPhasesEl.textContent = `Max phases: ${uiPhase(theoreticalMaxPhases)}`;
+  }
+}
 
   function setControlsEnabled(on) {
     [resetBtn, sortBtn, stepBtn, prevBtn, nextBtn].forEach((b) => b && (b.disabled = !on));
@@ -857,4 +849,3 @@ window.parallelShearsort = (function () {
     toggleStepMode,
   };
 })();
-
