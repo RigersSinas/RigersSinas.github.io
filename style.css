@@ -296,7 +296,26 @@ footer img { height: 80px; margin: 10px; }
     width: 100%;
   }
 
+  /* Logo + τίτλος στην ίδια σειρά */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    margin-left: 10px;
+  }
+
+  .logo img {
+    height: 36px;   /* μικρότερο logo για να χωράει */
+    margin: 0;
+  }
+
   header .logo h1 {
-    transform: translateX(-10px);
+    transform: none;     /* ακυρώνει το παλιό translate */
+    font-size: 18px;     /* μικρότερο για mobile */
+    margin: 0;
+    white-space: nowrap; /* να μη σπάει σε 2 γραμμές */
+    color: #ccc;
   }
 }
+
