@@ -93,7 +93,6 @@ main {
   padding: 0 3px;
   gap: 20px;
   min-width: 520px;
-  overflow: hidden;
 }
 
 .info-box, .dark-box {
@@ -112,11 +111,14 @@ canvas {
   display: block;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   cursor: pointer;
-  width: 600px;
-  height: 400px;
+
+  width: min(600px, 100%);
+  height: auto;
+  aspect-ratio: 3 / 2;
+  max-width: 100%;
 }
 
-.controls {
+controls {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -226,12 +228,10 @@ footer img { height: 80px; margin: 10px; }
 .nowrap-pair-left { display: inline-flex; align-items: center; gap: 6px; }
 .nowrap-pair { display: inline-flex; align-items: center; gap: 6px; }
 
-/* --- DESKTOP ONLY --- */
 @media (min-width: 1025px) {
   .right-section { min-width: 520px; }
 }
 
-/* --- TABLET ONLY --- */
 @media (min-width: 601px) and (max-width: 1024px) {
   main {
     flex-direction: row;
@@ -259,7 +259,6 @@ footer img { height: 80px; margin: 10px; }
   }
 }
 
-/* --- MOBILE ONLY --- */
 @media (max-width: 600px) {
   html, body { overflow-x: hidden; }
 
@@ -296,7 +295,6 @@ footer img { height: 80px; margin: 10px; }
     width: 100%;
   }
 
-  /* Logo + τίτλος στην ίδια σειρά */
   .logo {
     display: flex;
     align-items: center;
@@ -306,16 +304,15 @@ footer img { height: 80px; margin: 10px; }
   }
 
   .logo img {
-    height: 36px;   /* μικρότερο logo για να χωράει */
+    height: 36px;  
     margin: 0;
   }
 
   header .logo h1 {
-    transform: none;     /* ακυρώνει το παλιό translate */
-    font-size: 18px;     /* μικρότερο για mobile */
+    transform: none;
+    font-size: 18px;
     margin: 0;
-    white-space: nowrap; /* να μη σπάει σε 2 γραμμές */
+    white-space: nowrap;
     color: #ccc;
   }
 }
-
