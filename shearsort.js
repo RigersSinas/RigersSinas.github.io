@@ -85,9 +85,9 @@ window.parallelShearsort = (function () {
       columnSorting:
         'Phase {0}: Parallel Column sorting.<br>Smaller numbers move upward.',
       meshSorted: 'Mesh sorted in parallel.<br>Numbers appear in snakelike order.',
-      totalCells: 'Total cells: {0}',
       currentPhase: 'Current phase: {0}',
-      maxPhases: 'Final phase: {0}',
+      totalPhases: 'Total phases: {0}',
+      maxPhases: 'Max phases: {0}',
     },
     el: {
       title: 'Αλγόριθμος Shearsort',
@@ -116,9 +116,9 @@ window.parallelShearsort = (function () {
         'Φάση {0}: Παράλληλη ταξινόμηση στηλών.<br>Οι μικρότεροι αριθμοί κινούνται προς τα πάνω.',
       meshSorted:
         'Το πλέγμα ταξινομήθηκε παράλληλα.<br>Οι αριθμοί εμφανίζονται με φιδοειδή σειρά.',
-      totalCells: 'Συνολικά κελιά: {0}',
-      currentPhase: 'Τρέχουσα φάση: {0}',
-      maxPhases: 'Τελική φάση: {0}',
+     currentPhase: 'Τρέχουσα φάση: {0}',
+     totalPhases: 'Σύνολο φάσεων: {0}',
+     maxPhases: 'Μέγιστος # φάσεων: {0}',
     },
   };
 
@@ -314,18 +314,39 @@ window.parallelShearsort = (function () {
     if (phaseInfo) phaseInfo.innerHTML = message;
   }
 
- function updateStatsUI() {
-  if (currentPhaseEl) {
-    currentPhaseEl.textContent = `Current phase: ${uiPhase(currentPhase)}`;
+function updateStatsUI() {
+  const t = translations[currentLanguage];
+
+  // Είμαστε στη "F" προβολή μόνο όταν έχει προστεθεί η τελική φάση
+  // και ο χρήστης βλέπει το τελευταίο index (maxPhase).
+  const viewingFinal = isSorted && finalPhaseAdded && currentPhase === maxPhase;
+
+  // Current phase: αριθμός ή "F"
+  const currentLabel = viewingFinal ? 'F' : String(uiPhase(currentPhase));
+
+  // Total phases: να ΜΗΝ μετράει την F
+  // Αν έχει προστεθεί η F, τότε το maxPhase περιλαμβάνει +1, άρα δείχνουμε maxPhase-1.
+  const totalPhasesNumber = finalPhaseAdded ? Math.max(0, maxPhase - 1) : maxPhase;
+
+  if (totalCellsEl) {
+    totalCellsEl.textContent = formatString(t.totalCells, size * size);
   }
+
+  if (currentPhaseEl) {
+    currentPhaseEl.textContent = formatString(t.currentPhase, currentLabel);
+  }
+
   const totalPhasesEl = document.getElementById('total-phases');
   if (totalPhasesEl) {
-    totalPhasesEl.textContent = `Total phases: ${uiPhase(maxPhase)}`;
+    // ΠΡΟΣΟΧΗ: εδώ χρησιμοποιούμε totalPhases key (όχι maxPhases)
+    totalPhasesEl.textContent = formatString(t.totalPhases, String(uiPhase(totalPhasesNumber)));
   }
+
   if (maxPhasesEl) {
-    maxPhasesEl.textContent = `Max phases: ${uiPhase(theoreticalMaxPhases)}`;
+    maxPhasesEl.textContent = formatString(t.maxPhases, String(uiPhase(theoreticalMaxPhases)));
   }
 }
+
 
   function setControlsEnabled(on) {
     [resetBtn, sortBtn, stepBtn, prevBtn, nextBtn].forEach((b) => b && (b.disabled = !on));
@@ -348,27 +369,36 @@ window.parallelShearsort = (function () {
     phaseButtons.style.transform = `scale(${scale})`;
   }
 
-  function createPhaseButtons() {
-    if (!phaseButtons) return;
-    phaseButtons.innerHTML = '';
-    const last = Math.max(maxPhase, 0);
-    for (let i = 0; i <= last; i++) {
-      const button = document.createElement('button');
-      button.className = 'phase-btn';
-      button.textContent = i;
-      button.addEventListener('click', function () {
-        const target = i;
-        if (target < gridHistory.length) {
-          goToPhase(target);
-        } else {
-          runUntilPhase(target);
-        }
-      });
-      phaseButtons.appendChild(button);
-    }
-    updateActivePhaseButton();
-    fitPhaseButtons();
+ function createPhaseButtons() {
+  if (!phaseButtons) return;
+  phaseButtons.innerHTML = '';
+
+  const last = Math.max(maxPhase, 0);
+
+  for (let i = 0; i <= last; i++) {
+    const button = document.createElement('button');
+    button.className = 'phase-btn';
+
+    // Αν υπάρχει final phase και είναι το τελευταίο index -> δείξε "F"
+    const isFinalButton = finalPhaseAdded && isSorted && i === maxPhase;
+    button.textContent = isFinalButton ? 'F' : i;
+
+    button.addEventListener('click', function () {
+      const target = i;
+      if (target < gridHistory.length) {
+        goToPhase(target);
+      } else {
+        runUntilPhase(target);
+      }
+    });
+
+    phaseButtons.appendChild(button);
   }
+
+  updateActivePhaseButton();
+  fitPhaseButtons();
+}
+
 
   // ---- Input handlers ----
   function handleCanvasClick(event) {
