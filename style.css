@@ -73,12 +73,14 @@ header {
   text-overflow: ellipsis;
 }
 
+/* ✅ language switcher σταθερό κάτω-δεξιά σε PC & mobile */
 .language-switcher {
   position: absolute;
   bottom: 6px;
   right: 12px;
   font-size: 20px;
   z-index: 3000;
+  white-space: nowrap;
 }
 
 .language-switcher a {
@@ -312,12 +314,8 @@ footer img {
   .logo img { height: 36px; }
   header .logo h1 { font-size: 18px; }
 
-  .language-switcher {
-    top: 10px;
-    bottom: auto;
-    right: 70px;
-    font-size: 18px;
-  }
+  /* ίδια θέση, μόνο μικρότερο font */
+  .language-switcher { font-size: 18px; }
 
   #phaseInfo { max-width: 100%; }
 
@@ -326,18 +324,18 @@ footer img {
 
   footer img { height: 56px; max-width: 200px; }
 
+
   .phase-navigation-row {
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 2px;
+    justify-content: center;
+    overflow: hidden;                
+    -webkit-overflow-scrolling: auto; 
+    padding-bottom: 0;
   }
 
-  .phase-navigation-row::-webkit-scrollbar { display: none; }
-
+ 
   #phase-buttons {
-    transform: none !important;
-    min-width: max-content;
-    justify-content: flex-start;
+    transform: none;       
+    min-width: 0;         
+    justify-content: center;
   }
 }
