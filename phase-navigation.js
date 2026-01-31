@@ -59,10 +59,6 @@
   }
 
   function fitStrip() {
-    if (window.innerWidth <= 600) {
-      strip.style.transform = 'none';
-      return;
-    }
 
     strip.style.transform = 'scale(1)';
 
@@ -92,18 +88,18 @@
   }
 
   const obs = new MutationObserver(() => {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       placeLeftAndRightArrows();
       fitStrip();
-    }, 0);
+    });
   });
 
   obs.observe(strip, { childList: true });
 
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     placeLeftAndRightArrows();
     fitStrip();
-  }, 0);
+  });
 
   window.addEventListener('resize', () => {
     placeLeftAndRightArrows();
@@ -111,13 +107,13 @@
   });
 
   document.getElementById('stepBtn')?.addEventListener('click', () =>
-    setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0)
+    requestAnimationFrame(() => { placeLeftAndRightArrows(); fitStrip(); })
   );
   document.getElementById('nextBtn')?.addEventListener('click', () =>
-    setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0)
+    requestAnimationFrame(() => { placeLeftAndRightArrows(); fitStrip(); })
   );
   document.getElementById('prevBtn')?.addEventListener('click', () =>
-    setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0)
+    requestAnimationFrame(() => { placeLeftAndRightArrows(); fitStrip(); })
   );
 
   window.positionShearsortArrows = function () {
