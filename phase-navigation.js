@@ -1,9 +1,9 @@
 (function () {
   const strip = document.getElementById('phase-buttons');
-  const leftArrow  = document.querySelector('.phase-navigation .prev-all');  // <<
-  const rightArrow = document.querySelector('.phase-navigation .next-all');  // >>
-  const row        = document.querySelector('.phase-navigation-row');
-  const nav        = document.querySelector('.phase-navigation');
+  const leftArrow = document.querySelector('.phase-navigation .prev-all');
+  const rightArrow = document.querySelector('.phase-navigation .next-all');
+  const row = document.querySelector('.phase-navigation-row');
+  const nav = document.querySelector('.phase-navigation');
 
   if (!strip || !leftArrow || !rightArrow || !row || !nav) return;
 
@@ -18,7 +18,6 @@
     placing = true;
     obs.disconnect();
 
-    // ---- Left pair: << + first phase
     let leftWrap = strip.querySelector('.nowrap-pair-left');
     if (!leftWrap) {
       leftWrap = document.createElement('span');
@@ -28,7 +27,7 @@
     const first = phases[0];
     if (first && first.parentElement !== leftWrap) {
       leftWrap.replaceChildren();
-      leftWrap.appendChild(leftArrow); // keep existing listeners
+      leftWrap.appendChild(leftArrow);
       leftWrap.appendChild(first);
     }
 
@@ -36,7 +35,6 @@
       strip.insertBefore(leftWrap, strip.firstChild);
     }
 
-    // ---- Right pair: last phase + >>
     let rightWrap = strip.querySelector('.nowrap-pair');
     if (!rightWrap) {
       rightWrap = document.createElement('span');
@@ -45,10 +43,11 @@
 
     const buttonsNow = [...strip.querySelectorAll('.phase-btn')];
     const last = buttonsNow[buttonsNow.length - 1];
+
     if (last && last.parentElement !== rightWrap) {
       rightWrap.replaceChildren();
       rightWrap.appendChild(last);
-      rightWrap.appendChild(rightArrow); // keep existing listeners
+      rightWrap.appendChild(rightArrow);
     }
 
     if (rightWrap.parentElement !== strip || rightWrap !== strip.lastElementChild) {
@@ -60,7 +59,12 @@
   }
 
   function fitStrip() {
-    strip.style.transform = 'scale(1)'; // reset for correct measurement
+    if (window.innerWidth <= 600) {
+      strip.style.transform = 'none';
+      return;
+    }
+
+    strip.style.transform = 'scale(1)';
 
     const containerW = row.clientWidth || window.innerWidth;
 
@@ -70,13 +74,10 @@
     const leftW = leftWrap ? leftWrap.getBoundingClientRect().width : 0;
     const rightW = rightWrap ? rightWrap.getBoundingClientRect().width : 0;
 
-    // small safety padding for gaps/padding
     const EXTRA = 16;
 
-    // real available width for the "middle" content
     const available = Math.max(1, containerW - leftW - rightW - EXTRA);
 
-    // needed width for middle content (exclude wrappers)
     const neededTotal = strip.scrollWidth;
     const needed = Math.max(1, neededTotal - leftW - rightW);
 
@@ -99,15 +100,16 @@
 
   obs.observe(strip, { childList: true });
 
-  // Initial placement & scaling
   setTimeout(() => {
     placeLeftAndRightArrows();
     fitStrip();
   }, 0);
 
-  window.addEventListener('resize', fitStrip);
+  window.addEventListener('resize', () => {
+    placeLeftAndRightArrows();
+    fitStrip();
+  });
 
-  // Step hooks
   document.getElementById('stepBtn')?.addEventListener('click', () =>
     setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0)
   );
@@ -118,7 +120,6 @@
     setTimeout(() => { placeLeftAndRightArrows(); fitStrip(); }, 0)
   );
 
-  // External hook (optional)
   window.positionShearsortArrows = function () {
     placeLeftAndRightArrows();
     fitStrip();
