@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Interactive Parallel Shear Sort Visualization</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive Parallel Shear Sort Visualization</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 <header>
   <div class="logo">
     <img src="logo.png" alt="Parallel Shearsort Logo" />
     <h1 id="title">Shearsort algorithm</h1>
   </div>
-  <div class="language-switcher">
+
+  <div class="language-switcher" aria-label="Language switcher">
     <a href="#" id="el">EL</a> |
     <a href="#" id="en" class="active">EN</a>
   </div>
 </header>
 
 <main>
-  <div class="left-section">
+  <section class="left-section">
     <div class="info-box">
       <h2 id="about-title">About the app</h2>
-      <p id="about-text">An interactive animated visualization of the Shearsort parallel sorting algorithm for 2D meshes, intented to support courses on parallel algorithms.</p>
+      <p id="about-text">
+        An interactive animated visualization of the Shearsort parallel sorting algorithm for 2D meshes, intented to support courses on parallel algorithms.
+      </p>
     </div>
 
     <div class="dark-box">
       <h2 id="how-to-use-title">How to use</h2>
-      <p id="how-to-use-text">Select your desired mesh-dimension. You can modify the generated mesh by clicking on its cells to alter their value from black to while and vice versa. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "Phases" to view the sorting procedure in a step-by-step fashion. "Reset" generates a new instance.</p>
+      <p id="how-to-use-text">
+        Select your desired mesh-dimension. You can modify the generated mesh by clicking on its cells to alter their value from black to while and vice versa. Select "Sort" to watch the mesh being gradually sorted by Shearsort. Select "Phases" to view the sorting procedure in a step-by-step fashion. "Reset" generates a new instance.
+      </p>
     </div>
 
     <div class="info-box">
       <h2 id="how-it-works-title">How it works</h2>
-      <p id="how-it-works-text">Shearsort sorts the mesh by alternately sorting rows and columns. Rows are sorted in odd phases (i.e., 1, 3, 5,...). Columns are sorted in even phases (i.e., 2, 4, 6,...). In columns smaller numbers move upward. In odd rows smaller numbers move leftward while in even rows smaller numbers move rightward. The numbers appear in a snakelike order fast enough i.e., after at most logN + 1 phases for a mesh of N numbers. The odd-even transposition sort parallel algorithm is used for sorting independent rows or columns. For details:
-        <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">
+      <p id="how-it-works-text">
+        Shearsort sorts the mesh by alternately sorting rows and columns. Rows are sorted in odd phases (i.e., 1, 3, 5,...). Columns are sorted in even phases (i.e., 2, 4, 6,...). In columns smaller numbers move upward. In odd rows smaller numbers move leftward while in even rows smaller numbers move rightward. The numbers appear in a snakelike order fast enough i.e., after at most logN + 1 phases for a mesh of N numbers. The odd-even transposition sort parallel algorithm is used for sorting independent rows or columns. For details:
+        <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures"
+           target="_blank" rel="noopener noreferrer">
           F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.
         </a>
       </p>
@@ -41,14 +49,16 @@
 
     <div class="dark-box">
       <h2 id="why-bw-title">Why black and white boxes</h2>
-      <p id="why-bw-text">Shearsort correctly sorts all input sequences, which - regardless of their particular values - can always be mapped to appropriately generated equivalent sequences of 0s and 1s visualized as black and white cells.</p>
+      <p id="why-bw-text">
+        Shearsort correctly sorts all input sequences, which - regardless of their particular values - can always be mapped to appropriately generated equivalent sequences of 0s and 1s visualized as black and white cells.
+      </p>
     </div>
-  </div>
+  </section>
 
-  <div class="right-section">
+  <section class="right-section">
     <canvas id="canvas" width="600" height="400"></canvas>
 
-    <div id="phaseInfo">Random mesh</div>
+    <div id="phaseInfo" role="status" aria-live="polite">Random mesh</div>
 
     <div class="controls">
       <select id="gridSize" onchange="window.parallelShearsort.reset()">
@@ -74,19 +84,19 @@
 
     <div class="phase-navigation" style="display: none;">
       <div class="phase-navigation-row">
-        <button class="nav-btn prev-all">&laquo;</button>
+        <button class="nav-btn prev-all" aria-label="First phase">&laquo;</button>
         <div id="phase-buttons"></div>
-        <button class="nav-btn next-all">&raquo;</button>
+        <button class="nav-btn next-all" aria-label="Last phase">&raquo;</button>
       </div>
     </div>
 
-    <div class="stats-bar">
-      <span id="current-phase">Current phase: 0</span> |
-      <span id="total-phases">Total phases: 0</span> |
-      <span id="max-phases">Max phases: 0</span> 
-
+    <!-- Stats: ΜΟΝΟ spans, separators θα μπουν με CSS -->
+    <div class="stats-bar" role="group" aria-label="Statistics">
+      <span id="current-phase">Current phase: 0</span>
+      <span id="total-phases">Total phases: 0</span>
+      <span id="max-phases">Max phases: 0</span>
     </div>
-  </div>
+  </section>
 </main>
 
 <footer>
@@ -96,9 +106,5 @@
 <script src="shearsort.js"></script>
 <script src="https://cdn.userway.org/widget.js" data-account="Y9U3I71SX5"></script>
 <script src="phase-navigation.js" defer></script>
-</script>
 </body>
 </html>
-
-
-
