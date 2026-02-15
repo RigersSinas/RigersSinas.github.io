@@ -70,7 +70,7 @@ window.parallelShearsort = (function () {
       howItWorksTitle: 'How it works',
       howItWorksText:
         'Shearsort alternates between sorting rows and columns. Rows are sorted in odd phases (i.e., 1, 3, 5, ...). Columns are sorted in even phases (i.e., 2, 4, 6, ...). In columns smaller numbers move upward. In odd rows smaller numbers move leftward while in even rows smaller numbers move rightward. The numbers appear in a snakelike order fast enough, i.e., after at most logN + 1 phases for a mesh of N numbers. The odd–even transposition sort parallel algorithm is used for sorting independent rows or columns. For details: <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.</a>',
-      whyBWTitle: 'Why black and white boxes',
+      whyBWTitle: 'Why black and white cells',
       whyBWText:
         'Shearsort correctly sorts every input sequence. However, all input sequences—regardless of their exact values—can be mapped to appropriately generated equivalent sequences of zeros and ones visualized as black and white cells.',
       resetBtn: 'Reset',
@@ -100,7 +100,7 @@ window.parallelShearsort = (function () {
       howItWorksTitle: 'Πώς λειτουργεί',
       howItWorksText:
         'Ο αλγόριθμος Shearsort ταξινομεί το πλέγμα εναλλάσσοντας την ταξινόμηση γραμμών και στηλών. Οι γραμμές ταξινομούνται στις περιττές φάσεις (δηλ. 1, 3, 5, …). Οι στήλες ταξινομούνται στις άρτιες φάσεις (δηλ. 2, 4, 6, …). Στις στήλες, οι μικρότερες τιμές κινούνται προς τα πάνω. Στις περιττές γραμμές, οι μικρότερες τιμές κινούνται προς τα αριστερά, ενώ στις άρτιες γραμμές προς τα δεξιά. Οι αριθμοί τελικά εμφανίζονται με μορφή «φιδιού». Για την ταξινόμηση των ανεξάρτητων γραμμών ή στηλών χρησιμοποιείται ο παράλληλος αλγόριθμος odd–even transposition sort. Για λεπτομέρειες: <a href="https://www.sciencedirect.com/book/9781483207728/introduction-to-parallel-algorithms-and-architectures" target="_blank" rel="noopener noreferrer">F. T. Leighton, <em>Introduction to Parallel Algorithms and Architectures</em>, Elsevier, 1992.</a>',
-      whyBWTitle: 'Γιατί μαύρα και λευκά κουτιά',
+      whyBWTitle: 'Γιατί μαύρα και λευκά κελία',
       whyBWText:
         'Ο Shearsort ταξινομεί σωστά κάθε ακολουθία εισόδου, η οποία—ανεξάρτητα από τις συγκεκριμένες τιμές της—μπορεί να αντιστοιχιστεί σε ισοδύναμη ακολουθία από 0 και 1, η οποία απεικονίζεται ως κελιά με μαύρο και άσπρο χρώμα.',
       resetBtn: 'Επαναφορά',
@@ -879,4 +879,5 @@ function updateStatsUI() {
     toggleStepMode,
   };
 })();
+
 
